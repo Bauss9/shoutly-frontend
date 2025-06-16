@@ -1,6 +1,5 @@
 // src/app/[username]/page.tsx
 
-import { apiClient } from '@/lib/api';
 import { Campaign, ProfileData } from '@/types';
 import { CheckCircle2, Clock, MessageCircle, Star, TrendingUp, Users, Video } from 'lucide-react';
 import { Metadata } from 'next';
