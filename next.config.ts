@@ -6,6 +6,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+  swcMinify: false,
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
@@ -20,7 +25,6 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      // Add other domains you might use for profile pictures
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
