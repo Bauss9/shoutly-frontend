@@ -15,6 +15,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/shoutly/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.dicebear.com',
         port: '',
         pathname: '/**',
