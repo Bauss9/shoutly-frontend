@@ -257,7 +257,7 @@ export default function ProfilePageClient(props: {
 
     try {
      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-     const response = await fetch(`${baseUrl}/api/public/orders`, {
+     const response = await fetch(`${baseUrl}/public/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
