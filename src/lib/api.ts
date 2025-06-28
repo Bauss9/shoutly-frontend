@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://e923-2001-9e8-9393-2000-f4b9-6a28-d884-c7ab.ngrok-free.app/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://ghiblification.io/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
