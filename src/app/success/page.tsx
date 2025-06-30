@@ -23,12 +23,12 @@ export default function SuccessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center p-4">
-      {/* Animated background elements */}
-      <div className="absolute top-20 left-20 w-96 h-96 bg-green-200/30 rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl animate-pulse-slow" />
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-8 px-4 overflow-x-hidden">
+      {/* Animated background elements - kept within safe bounds */}
+      <div className="absolute top-20 left-10 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse-slow" />
+      <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-200/30 rounded-full blur-3xl animate-pulse-slow" />
       
-      <div className="relative max-w-md w-full">
+      <div className="max-w-md mx-auto relative">
         {/* Success Card */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 text-center animate-fadeIn">
           {/* Success Icon */}
@@ -128,14 +128,14 @@ export default function SuccessPage() {
           </p>
         </div>
 
-        {/* Celebration Effects */}
-        <div className="absolute -top-10 -left-10 text-6xl animate-bounce" style={{ animationDelay: '700ms' }}>
+        {/* Celebration Effects - Positioned within safe bounds */}
+        <div className="absolute top-4 left-4 text-4xl animate-bounce pointer-events-none" style={{ animationDelay: '700ms' }}>
           🎉
         </div>
-        <div className="absolute -top-10 -right-10 text-6xl animate-bounce" style={{ animationDelay: '800ms' }}>
+        <div className="absolute top-4 right-4 text-4xl animate-bounce pointer-events-none" style={{ animationDelay: '800ms' }}>
           🎊
         </div>
-        <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 text-6xl animate-bounce" style={{ animationDelay: '900ms' }}>
+        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-4xl animate-bounce pointer-events-none" style={{ animationDelay: '900ms' }}>
           ✨
         </div>
       </div>

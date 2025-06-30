@@ -57,19 +57,21 @@ function OrderModal({
   profile: PublicProfile;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (email: string, name: string, message: string) => void;
+  onConfirm: (email: string, name: string, message: string, shoutoutType: 'script' | 'creative', scriptText?: string) => void;
 }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [shoutoutType, setShoutoutType] = useState<'script' | 'creative'>('creative');
+  const [scriptText, setScriptText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (!email) return;
     
     setIsSubmitting(true);
-    await onConfirm(email, name, message);
+    await onConfirm(email, name, message, shoutoutType, scriptText);
     setIsSubmitting(false);
   };
 
@@ -77,13 +79,13 @@ function OrderModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-lg w-full max-h-[95vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-gray-900">Shoutout bestellen</h3>
             <button 
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 text-2xl"
             >
               ✕
             </button>
@@ -109,51 +111,131 @@ function OrderModal({
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                E-Mail Adresse *
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                📧 <span>Deine E-Mail-Adresse</span>
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Hier schicken wir deinen Shoutout"
+                placeholder="Hierhin senden wir dir den Shoutout-Link."
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
               />
             </div>
 
+            {/* Shoutout Type Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dein Name *
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                🎬 <span>Wie soll der Creator deinen Shoutout gestalten?</span>
               </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Wie soll dich der Creator nennen?"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              
+              <div className="space-y-3">
+                <label className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="radio"
+                    name="shoutoutType"
+                    value="script"
+                    checked={shoutoutType === 'script'}
+                    onChange={(e) => setShoutoutType(e.target.value as 'script')}
+                    className="mt-1"
+                  />
+                  <div>
+                    <div className="font-medium text-gray-900">Fester Text (du gibst genau vor, was gesagt werden soll)</div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="radio"
+                    name="shoutoutType"
+                    value="creative"
+                    checked={shoutoutType === 'creative'}
+                    onChange={(e) => setShoutoutType(e.target.value as 'creative')}
+                    className="mt-1"
+                  />
+                  <div>
+                    <div className="font-medium text-gray-900">Freie Kreativität (du gibst nur grobe Infos, der Creator macht den Rest)</div>
+                  </div>
+                </label>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nachricht (Optional)
-              </label>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Erzähle dem Creator, worum es in deinem Shoutout gehen soll..."
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Optional: Spezielle Wünsche oder Anlass für den Shoutout
-              </p>
+            {/* Script Text - Only show when "Fester Text" is selected */}
+            {shoutoutType === 'script' && (
+              <div>
+                <div className="mb-3">
+                  <div className="text-sm font-medium text-gray-700 mb-2">
+                    Wenn du „Fester Text" gewählt hast:
+                  </div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    📝 <span>Dein gewünschter Text:</span>
+                  </label>
+                </div>
+                <textarea
+                  value={scriptText}
+                  onChange={(e) => setScriptText(e.target.value)}
+                  placeholder="Schreib hier genau, was der Creator sagen soll (inkl. Aussprache, Tonalität etc.)."
+                  rows={4}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm"
+                />
+              </div>
+            )}
+
+            {/* Creative Fields - Only show when "Freie Kreativität" is selected */}
+            {shoutoutType === 'creative' && (
+              <>
+                <div>
+                  <div className="mb-3">
+                    <div className="text-sm font-medium text-gray-700 mb-2">
+                      Wenn du „Freie Kreativität" gewählt hast:
+                    </div>
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                      💬 <span>(Optional) Dein Name:</span>
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Wie soll dich der Creator nennen — wenn überhaupt?"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                    🎯 <span>Grober Wunsch / Thema:</span>
+                  </label>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Worum soll es gehen? Z. B. Motivation, Spaß, Geburtstag, Insider etc."
+                    rows={3}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm"
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Delivery Info */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <div className="flex items-start gap-2">
+                <span className="text-lg">🔒</span>
+                <div className="text-sm">
+                  <div className="font-medium text-amber-800 mb-1">Hinweis:</div>
+                  <div className="text-amber-700">
+                    Der Creator hat <strong>48 Stunden</strong>, um deinen Shoutout zu liefern. Danach kannst du{' '}
+                    <strong>kostenlos stornieren</strong>, falls noch nichts angekommen ist.
+                  </div>
+                </div>
+              </div>
             </div>
 
+            {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
               <button
                 type="button"
@@ -164,7 +246,7 @@ function OrderModal({
               </button>
               <button
                 type="submit"
-                disabled={!email || !name || isSubmitting}
+                disabled={!email || isSubmitting}
                 className="flex-1 bg-slate-900 hover:bg-slate-800 disabled:bg-gray-300 text-white px-4 py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
@@ -251,43 +333,50 @@ export default function ProfilePageClient(props: {
     setSelectedOption(option);
     setIsModalOpen(true);
   };
+const handleOrderConfirm = async (
+  email: string, 
+  name: string, 
+  message: string, 
+  shoutoutType: 'script' | 'creative', 
+  scriptText?: string
+) => {
+  if (!selectedOption) return;
 
-  const handleOrderConfirm = async (email: string, name: string, message: string) => {
-    if (!selectedOption) return;
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+    const response = await fetch(`${baseUrl}/public/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        optionId: selectedOption.id,
+        creatorId: profile.id,
+        buyerEmail: email,
+        buyerName: name,
+        message: shoutoutType === 'creative' ? message : '',
+        scriptText: shoutoutType === 'script' ? scriptText : '',
+        shoutoutType: shoutoutType,
+        amount: selectedOption.price,
+        duration: selectedOption.duration
+      }),
+    });
 
-    try {
-     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-     const response = await fetch(`${baseUrl}/public/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          optionId: selectedOption.id,
-          creatorId: profile.id,
-          buyerEmail: email,
-          buyerName: name,
-          message: message || '',
-          amount: selectedOption.price,
-          duration: selectedOption.duration
-        }),
-      });
+    const result = await response.json();
 
-      const result = await response.json();
-
-      if (result.success) {
-        router.push(`/success?order=${result.data.order.orderNumber}`);
-      } else {
-        alert('Fehler beim Erstellen der Bestellung: ' + result.message);
-      }
-    } catch (error) {
-      console.error('Order error:', error);
-      alert('Fehler beim Erstellen der Bestellung');
-    } finally {
-      setIsModalOpen(false);
-      setSelectedOption(null);
+    if (result.success) {
+      router.push(`/success?order=${result.data.order.orderNumber}`);
+    } else {
+      alert('Fehler beim Erstellen der Bestellung: ' + result.message);
     }
-  };
+  } catch (error) {
+    console.error('Order error:', error);
+    alert('Fehler beim Erstellen der Bestellung');
+  } finally {
+    setIsModalOpen(false);
+    setSelectedOption(null);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50">

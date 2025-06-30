@@ -54,7 +54,7 @@ function getDisplayName(profile: PublicProfile): string {
 // API call to get profile data
 async function getProfileData(username: string): Promise<ProfileData | null> {
   try {
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 const response = await fetch(`${baseUrl}/public/profile/${username}`, {
  cache: 'no-store'
 });
