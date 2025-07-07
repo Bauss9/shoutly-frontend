@@ -63,6 +63,18 @@ const createPaymentIntent = async (data: {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
   
   try {
+
+    console.log('This is the data:', JSON.stringify({
+              optionId: data.optionId,
+        creatorId: data.creatorId,
+        buyerEmail: data.buyerEmail,
+        buyerName: data.buyerName,
+        message: data.message,
+        metadata: {
+          shoutoutType: data.shoutoutType,
+          scriptText: data.scriptText
+        }
+    }))
     const response = await fetch(`${baseUrl}/payments/create-intent`, {
       method: 'POST',
       headers: {
@@ -487,26 +499,26 @@ setPaymentError('Fehler beim Erstellen der Zahlung. Bitte versuche es erneut.');
                 </div>
               )}
 
-              {/* Creative Fields - Only show when "Freie Kreativität" is selected */}
-              {shoutoutType === 'creative' && (
-                <>
                   <div>
                     <div className="mb-3">
                       <div className="text-sm font-medium text-gray-700 mb-2">
                         Wenn du „Freie Kreativität" gewählt hast:
                       </div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                        💬 <span>(Optional) Dein Name:</span>
+                        💬 <span>Dein Name:</span>
                       </label>
                     </div>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Wie soll dich der Creator nennen — wenn überhaupt?"
+                      placeholder="Wie soll dich der Creator nennen?"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
                   </div>
+              {/* Creative Fields - Only show when "Freie Kreativität" is selected */}
+              {shoutoutType === 'creative' && (
+                <>
 
                   <div>
                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
