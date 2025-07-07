@@ -501,9 +501,6 @@ setPaymentError('Fehler beim Erstellen der Zahlung. Bitte versuche es erneut.');
 
                   <div>
                     <div className="mb-3">
-                      <div className="text-sm font-medium text-gray-700 mb-2">
-                        Wenn du „Freie Kreativität" gewählt hast:
-                      </div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                         💬 <span>Dein Name:</span>
                       </label>
@@ -519,6 +516,10 @@ setPaymentError('Fehler beim Erstellen der Zahlung. Bitte versuche es erneut.');
               {/* Creative Fields - Only show when "Freie Kreativität" is selected */}
               {shoutoutType === 'creative' && (
                 <>
+
+                                      <div className="text-sm font-medium text-gray-700 mb-2">
+                        Wenn du „Freie Kreativität" gewählt hast:
+                      </div>
 
                   <div>
                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
